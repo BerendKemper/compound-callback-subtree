@@ -2,7 +2,7 @@
 Node JS Filesystem show tree of subdirectories and stats of files.
 
 <pre>
-basePath
+mongo-backup
 |__ 2020-07-25
 |     |__ monkeys
 |           |__ monkeys.bson
