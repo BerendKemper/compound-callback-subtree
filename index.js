@@ -7,7 +7,7 @@ for (const key of Object.keys(new Stats()))
   allKeysStats[key] = true;
 
 /**
- * create a tree of sub-directories and show stats of files
+ * Create a tree of sub-directories and show stats of files
  * @param  {String} basePath The base path
  * @param  {Array} keysStats The keys to show from fs.Stats
  * @return {Object}          Tree with stats or no stats
