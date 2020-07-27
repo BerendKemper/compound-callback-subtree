@@ -3,7 +3,7 @@ Node JS Filesystem show tree of subdirectories and stats of files.
 
 basePath<br>
 |__ 2020-07-25<br>
-|     |__ monkeys<br>
+|‎‎‎‎‎|__ monkeys<br>
 |           |__ monkeys.bson<br>
 |           |__ monkeys.metadata.bson<br>
 |__ 2020-07-26<br>
