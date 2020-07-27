@@ -19,7 +19,7 @@ root
                   |__ monkeys.metadata.bson
 
 const fsStatsTree = require("fsStatsTree");
-fsStatsTree("mongo-backup", ["size", "atimeMs", "ctimeMs", "birthtimeMs"]).then(tree => console.log(tree));
+fsStatsTree("./mongo-backup", ["size", "atimeMs", "ctimeMs", "birthtimeMs"]).then(tree => console.log(tree));
 
 // returns
 {
