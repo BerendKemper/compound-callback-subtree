@@ -6,7 +6,7 @@ const allKeysStats = {};
 for (const key of Object.keys(new Stats()))
   allKeysStats[key] = true;
 
-exports = (basePath, keysStats = []) => {
+module.exports = (basePath, keysStats = []) => {
   return new Promise((resolve, reject) => {
     if (keysStats instanceof Array) {
       const baseTree = {};
