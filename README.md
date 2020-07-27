@@ -40,7 +40,8 @@ fsStatsTree("./mongo-backup", ["size", "atimeMs", "ctimeMs", "birthtimeMs"]).the
     }
   },
   "2020-07-26": {
-    // etc
-  }
+    // etc...
+  },
+  // etc...
 }
 </pre>
