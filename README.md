@@ -22,7 +22,7 @@ fsStatsTree("mongo-backup", ["size", "atimeMs", "ctimeMs", "birthtimeMs"]).then(
 // returns
 {
   "2020-07-25": {
-    monkeys: {<br>
+    monkeys: {
       "monkeys.bson": {
         atimeMs: 1595804400002.384,
         birthtimeMs: 1595866106995.452,
