@@ -18,8 +18,8 @@ basePath
 
 const fsStatsTree = require("fsStatsTree");
 fsStatsTree("mongo-backup", ["size", "atimeMs", "ctimeMs", "birthtimeMs"]).then(tree => console.log(tree));
-// returns
 
+// returns
 {
   "2020-07-25": {
     monkeys: {<br>
