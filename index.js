@@ -6,7 +6,13 @@ const allKeysStats = {};
 for (const key of Object.keys(new Stats()))
   allKeysStats[key] = true;
 
-module.exports = (basePath, keysStats = []) => {
+/**
+ * create a tree of sub-directories and show stats of files
+ * @param  {String} basePath The base path
+ * @param  {Array} keysStats The keys to show from fs.Stats
+ * @return {Object}          Tree with stats or no stats
+ */
+const fsTreeStats = (basePath, keysStats = []) => {
   return new Promise((resolve, reject) => {
     if (keysStats instanceof Array) {
       const baseTree = {};
@@ -47,3 +53,4 @@ module.exports = (basePath, keysStats = []) => {
       reject("statsParams must be an Array");
   });
 };
+module.exports = fsTreeStats;
