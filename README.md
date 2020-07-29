@@ -18,24 +18,29 @@ root
                   |__ monkeys.bson
                   |__ monkeys.metadata.bson
 
-const fsStatsTree = require("fsStatsTree");
-fsStatsTree("./mongo-backup", ["size", "atimeMs", "ctimeMs", "birthtimeMs"]).then(tree => console.log(tree));
+const { fsStatsTree, namedStatsCallback } = require("fsStatsTree");
+fsStatsTree("./mongo-backup", {
+  "size": size => size + " bytes",
+  "atimeMs": namedStatsCallback("created", time => new Date(time).toISOString()),
+  "ctimeMs": time => time,
+  "birthtimeMs": namedStatsCallback("updated", time => new Date(time).toISOString())
+}).then(tree => console.log(tree));
 
 // returns
 {
   "2020-07-25": {
     monkeys: {
       "monkeys.bson": {
-        atimeMs: 1595804400002.384,
-        birthtimeMs: 1595866106995.452,
+        size: "43900449 bytes",
+        created: "2020-07-25T09:24:39.104Z",
         ctimeMs: 1595866106995.452,
-        size: 44630879
+        updated: "2020-07-25T10:44:30.416Z"
       },
       "monkeys.metadata.bson": {
-        atimeMs: 1595804400002.384
-        birthtimeMs: 1595866106915.4517
-        ctimeMs: 1595866106915.4517
-        size: 163
+        size: "163 bytes",
+        created: "2020-07-25T09:24:39.104Z",
+        ctimeMs: 1595866106915.4517,
+        updated: "2020-07-25T10:44:30.340Z"
       }
     }
   },
