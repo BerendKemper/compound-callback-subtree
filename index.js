@@ -8,38 +8,37 @@ for (const key of Object.keys(new Stats()))
 
 /**
  * Create a tree of sub-directories and show stats of files
- * @param  {String} basePath The base path
- * @param  {Array} keysStats The keys to show from fs.Stats
- * @return {Object}          Tree with stats or no stats
+ * @param  {String} basePath        The base path
+ * @param  {Object} statsCallbacks  The keys that should be passed through a callback
+ * @return {Object}                 Tree with stats-values that can be modified by the statsCallbacks
  */
-const fsTreeStats = (basePath, keysStats = []) => {
+const fsTreeStats = (basePath, statsCallbacks = {}) => {
   return new Promise((resolve, reject) => {
-    if (keysStats instanceof Array) {
+    if (typeof statsCallbacks === "object" && statsCallbacks instanceof Array === false) {
       const baseTree = {};
       (function checkKeys() {
-        const cloneKeys = Array.from(keysStats);
-        keysStats = [];
-        for (const key of cloneKeys)
-          if (allKeysStats[key] !== undefined)
-            keysStats.push(key);
+        const keys = Object.keys(statsCallbacks);
+        for (const key of keys)
+          if (allKeysStats[key] === undefined || typeof statsCallbacks[key] !== "function")
+            delete(statsCallbacks[key]);
       }());
       const subTree = (subPath, objSubTree) => {
         return new Promise((resolve, reject) => {
-          _fs.stat(subPath, (err, stats) => {
+          stat(subPath, (err, stats) => {
             if (err !== null)
               reject();
             if (stats.isDirectory()) {
-              _fs.readdir(subPath, async (err, files) => {
+              readdir(subPath, async (err, files) => {
                 for (const file of files) {
                   objSubTree[file] = {};
-                  await subTree(subPath + "/" + file, objSubTree[file]);
+                  await subTree(join(subPath, file), objSubTree[file]);
                 }
                 resolve();
               });
             }
             else if (stats.isFile()) {
-              for (const key of keysStats)
-                objSubTree[key] = stats[key];
+              for (const key in statsCallbacks)
+                objSubTree[statsCallbacks[key].name || key] = statsCallbacks[key](stats[key]);
               resolve();
             }
           });
@@ -53,4 +52,8 @@ const fsTreeStats = (basePath, keysStats = []) => {
       reject("statsParams must be an Array");
   });
 };
-module.exports = fsTreeStats;
+const namedStatsCallback = (name, statsCallback) => {
+  return Object.defineProperty(statsCallback, 'name', { value: name });
+};
+module.exports.fsTreeStats = fsTreeStats;
+module.exports.namedStatsCallback = namedStatsCallback;
