@@ -21,9 +21,9 @@ root
 const { fsStatsTree, namedStatsCallback } = require("fsStatsTree");
 fsStatsTree("./mongo-backup", {
   "size": size => size + " bytes",
-  "atimeMs": namedStatsCallback("created", time => new Date(time).toISOString()),
+  "atimeMs": namedStatsCallback("last accessed", time => new Date(time).toISOString()),
   "ctimeMs": time => time,
-  "birthtimeMs": namedStatsCallback("updated", time => new Date(time).toISOString())
+  "birthtimeMs": namedStatsCallback("created", time => new Date(time).toISOString())
 }).then(tree => console.log(tree));
 
 // returns
@@ -32,15 +32,15 @@ fsStatsTree("./mongo-backup", {
     monkeys: {
       "monkeys.bson": {
         size: "43900449 bytes",
-        created: "2020-07-25T09:24:39.104Z",
+        "last accessed": "2020-07-25T09:24:39.104Z",
         ctimeMs: 1595866106995.452,
-        updated: "2020-07-25T10:44:30.416Z"
+        created: "2020-07-25T10:44:30.416Z"
       },
       "monkeys.metadata.bson": {
         size: "163 bytes",
-        created: "2020-07-25T09:24:39.104Z",
+        "last accessed": "2020-07-25T09:24:39.104Z",
         ctimeMs: 1595866106915.4517,
-        updated: "2020-07-25T10:44:30.340Z"
+        created: "2020-07-25T10:44:30.340Z"
       }
     }
   },
