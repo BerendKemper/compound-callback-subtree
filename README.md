@@ -1,6 +1,8 @@
 # fsStatsTree
 Node JS Filesystem show tree of subdirectories and stats of files.
 
+The function fsStatsTree has been developed to return a data-tree of sub-directories and files in those sub-directories. The function takes in two parameters, you must pass a base-path as the 1st parameter and you may (optional) pass an Object as 2nd parameter. This function internally calls the fs.stat() and the fs.readdir() methods, like every other recursive directory tree. The Object from the 2nd parameter must be given keys from the fs.Stats class and function callbacks as the values. The returned data-tree of this function adds the keys from the fs.Stats class to files-only (not to directories). The callbacks were added because now you may modify the data returned from the keys from the fs.Stats class. This allows you to parse the time returned by the "birthtimeMs"-key through the Date class and return an ISO-string, or to add the String " bytes" to the values returned from the "size"-key, or to do nothing and just return the actual value like the return from the "ctimeMs"-key. As an extra feature you may also pass the callback itself through the namedStatsCallback function. This function takes in the new name as 1st parameter and the callback as the 2nd parameter. It will add a static "name" property to the callback. It allows you to change the naming of the keys from the fs.Stats class into more readable Strings to your liking. For example it changes the key "atimeMs" into the String "last accessed" and changes the "birthtimeMs" into "created".
+
 <pre>
 root
 |__app.js
