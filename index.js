@@ -49,15 +49,14 @@ const subTree = (subPath, statCallbacks) => {
 const fsTreeStats = (basePath, statsCallbacks = {}) => {
     return new Promise((resolve, reject) => {
         if (typeof statsCallbacks === "object" && statsCallbacks instanceof Array === false) {
-            const baseTree = {};
             (function checkKeys() {
                 const keys = Object.keys(statsCallbacks);
                 for (const key of keys)
                     if (allKeysStats[key] === undefined || typeof statsCallbacks[key] !== "function")
                         delete(statsCallbacks[key]);
             }());
-            subTree(basePath, baseTree)
-                .then(() => resolve(baseTree))
+            subTree(basePath, statsCallbacks)
+                .then(baseTree => resolve(baseTree))
                 .catch(err => reject());
         }
         else
