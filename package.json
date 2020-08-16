@@ -1,12 +1,21 @@
 {
-  "author": {
-    "name": "Berend Kemper",
-    "email": "berend_kemper@hotmail.com",
-  },
-  "description": "filesystem show tree of sub-dirs and stats of files",
-  "homepage": "https://github.com/BerendKemper/fsStatsTree",
-  "bugs": "https://github.com/BerendKemper/fsStatsTree/issues",
-  "license": "MIT",
-  "main": "index.js",
-  "version": "1.0.0"
+    "name": "dir-subtree",
+    "version": "1.0.0",
+    "description": "tree of subdirectories",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BerendKemper/dir-subtree.git"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Berend Kemper",
+        "email": "berend_kemper@hotmail.com",
+        "npmjs": "https://www.npmjs.com/~burndkemper"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/BerendKemper/dir-subtree/issues"
+    },
+    "homepage": "https://github.com/BerendKemper/dir-subtree#readme"
 }
