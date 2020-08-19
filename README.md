@@ -1,8 +1,8 @@
-# dual-cb-subtree
+# compound-callback-subtree
 Node JS Filesystem dual callback subtree for directories of files.
 <pre><code class="language-javascript">npm i compound-callback-subtree
 
-const { compoundCbSubTree, statCallback } = require("compound-cb-subtree");</code></pre>
+const { compoundCbSubTree, statCallback } = require("compound-callback-subtree");</code></pre>
 <ul>
     <li><a href="https://github.com/BerendKemper/task-clock#class-taskclock">Class: TaskClock</a></li>
     <ul>
