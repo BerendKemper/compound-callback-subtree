@@ -1,67 +1,53 @@
 "use strict";
-const { readdir, stat, Stats } = require("fs");
-const { join } = require("path");
-
-const allKeysStats = {};
-for (const key of Object.keys(new Stats()))
-    allKeysStats[key] = true;
-
-const subTree = (subPath, statCallbacks) => {
-    const baseTree = {};
-    const subTree = (subPath, objSubTree) => {
-        return new Promise((resolve, reject) => {
-            _fs.stat(subPath, (err, stats) => {
-                if (err !== null)
-                    reject();
-                if (stats.isDirectory()) {
-                    _fs.readdir(subPath, async (err, files) => {
-                        for (const file of files) {
-                            const nextPath = _path.join(subPath, file);
-                            if (file.endsWith(".json") && subPath.endsWith(file.substring(0, file.length - 5)))
-                                Object.assign(objSubTree, await configJson(nextPath));
-                            else {
-                                objSubTree[file] = {};
-                                await subTree(nextPath, objSubTree[file]);
-                            }
-                        }
-                        resolve(baseTree);
-                    });
-                }
-                else if (stats.isFile()) {
-                    for (const key in statCallbacks) {
-                        const statCallback = statCallbacks[key];
-                        objSubTree[statCallback.key || key] = statCallback(stats[key]);
+const fs = require("fs");
+const path = require("path");
+/**@param {Object} options 
+ * @param {String} options.basePath
+ * @param {Object} options.dirStatsCbs
+ * @param {Function} options.dirStatsCbs.fsStatsKey
+ * @param {Object} options.fileStatsCbs
+ * @param {Function} options.fileStatsCbs.fsStatsKey
+ * @param {Function} options.subBranchCb
+ * @param {Function} callback */
+const compoundCbSubTree = (options = {}, callback = tree => tree) => {
+    if (typeof options === "function") callback = options;
+    const { basePath = "./", dirStatsCbs = {}, fileStatsCbs = {}, subBranchCb = branch => new Promise((resolve, reject) => resolve()) } = options;
+    const subTree = (subpath, objSubTree) => new Promise((resolve, reject) =>
+        fs.stat(subpath, (err, stats) => {
+            if (err !== null)
+                reject();
+            if (stats.isDirectory()) {
+                for (const key in dirStatsCbs)
+                    objSubTree[dirStatsCbs[key].key || key] = dirStatsCbs[key](stats[key]);
+                fs.readdir(subpath, async (err, files) => {
+                    if (err !== null)
+                        reject();
+                    for (const file of files) {
+                        const nextPath = path.join(subpath, file);
+                        await new Promise(resolve =>
+                            subBranchCb({ subpath, nextPath, file, currentBranch: objSubTree }).then(subBranch => {
+                                objSubTree[file] = subBranch || {};
+                                subTree(nextPath, objSubTree[file]).then(() => resolve());
+                            }).catch(() => resolve()));
                     }
-                    resolve(baseTree);
-                }
-            });
-        });
-    };
-    return subTree(subPath, baseTree);
+                    resolve();
+                });
+            }
+            else if (stats.isFile()) {
+                for (const key in fileStatsCbs)
+                    objSubTree[fileStatsCbs[key].key || key] = fileStatsCbs[key](stats[key]);
+                resolve();
+            }
+        }));
+    const baseTree = {};
+    subTree(basePath, baseTree).then(() => callback(baseTree));
 };
-
 /**
- * Create a tree of sub-directories and show stats of files
- * @param  {String} basePath        The base path
- * @param  {Object} statsCallbacks  The keys that should be passed through a callback
- * @return {Object}                 Tree with stats-values that can be modified by the statsCallbacks
- */
-const fsTreeStats = (basePath, statsCallbacks = {}) => {
-    return new Promise((resolve, reject) => {
-        if (typeof statsCallbacks === "object" && statsCallbacks instanceof Array === false) {
-            (function checkKeys() {
-                const keys = Object.keys(statsCallbacks);
-                for (const key of keys)
-                    if (allKeysStats[key] === undefined || typeof statsCallbacks[key] !== "function")
-                        delete(statsCallbacks[key]);
-            }());
-            subTree(basePath, statsCallbacks)
-                .then(baseTree => resolve(baseTree))
-                .catch(err => reject());
-        }
-        else
-            reject("statsParams must be an Array");
-    });
+ * @param {String} key 
+ * @param {Function} callback */
+const statCallback = (key, statsCallback) => {
+    statsCallback.key = key;
+    return statsCallback
 };
-const namedStatsCallback = (name, statsCallback) =>  statsCallback.key = name;
-module.exports = Object.freeze({ fsTreeStats, namedStatsCallback });
+// const namedStatsCallback = (name, statsCallback) => statsCallback.key = name;
+module.exports = Object.freeze({ compoundCbSubTree, statCallback });

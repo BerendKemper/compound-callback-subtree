@@ -1,7 +1,7 @@
 {
-    "name": "dir-subtree",
+    "name": "compound-callback-subtree",
     "version": "1.0.0",
-    "description": "tree of subdirectories",
+    "description": "A subtree method that offers great flexibility and features to the developer",
     "main": "index.js",
     "repository": {
         "type": "git",
