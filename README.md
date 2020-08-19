@@ -1,5 +1,5 @@
 # compound-callback-subtree
-Node JS Filesystem dual callback subtree for directories of files.
+A subtree method that offers great flexibility and features to the developer.
 <pre><code class="language-javascript">npm i compound-callback-subtree
 
 const { compoundCbSubTree, statCallback } = require("compound-callback-subtree");</code></pre>
