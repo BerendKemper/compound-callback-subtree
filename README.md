@@ -3,15 +3,6 @@ A subtree method that offers great flexibility and features to the developer.
 <pre><code class="language-javascript">npm i compound-callback-subtree
 
 const { compoundCbSubTree, statCallback } = require("compound-callback-subtree");</code></pre>
-<ul>
-    <li><a href="https://github.com/BerendKemper/task-clock#class-taskclock">Class: TaskClock</a></li>
-    <ul>
-        <li><a href="https://github.com/BerendKemper/task-clock#taskclockfinish">taskClock.finish()</a></li>
-        <li><a href="https://github.com/BerendKemper/task-clock#taskclockstop">taskClock.stop()</a></li>
-        <li><a href="https://github.com/BerendKemper/task-clock#new-taskclockoptionstask">new TaskClock([options][,task])</a></li>
-    </ul>
-    <li><a href="https://github.com/BerendKemper/task-clock#examples">Examples</a></li>
-</ul>
 <h3>compoundCbSubTree([options][,callback])</h3>
 <ul>
     <li><code>options</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
