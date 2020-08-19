@@ -2,7 +2,7 @@
 A subtree method that offers great flexibility and features to the developer.
 <pre><code class="language-javascript">npm i compound-callback-subtree
 
-const { compoundCallbackSubTree, statCallback } = require("compound-callback-subtree");</code></pre>
+const { compoundCallbackSubTree } = require("compound-callback-subtree");</code></pre>
 <h3>compoundCallbackSubTree([options][,callback])</h3>
 <ul>
     <li><code>options</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
