@@ -10,22 +10,9 @@ const { compoundCbSubTree, statCallback } = require("compound-callback-subtree")
         <li><code>basePath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a> Default: "./"</li>
         <li><code>dirStatsCbs</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> Default: {}</li>
         <ul>
-            <li><a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">fs.Stats.anyKey</a><code>: callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></li>
-            <ul>
-                <li><code>any</code> (whatever returns from) <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats.key&gt;</a></li>
-                <li>Returns <code>do_with_it_what_you_need</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types">&lt;any&gt;</a></li>
-            </ul>
-            <li><a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">fs.Stats.anyKey</a><code>: callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></li>
-            <li>...etc</li>
         </ul>
         <li><code>fileStatsCbs</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> Default: {}</li>
         <ul>
-            <li><a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">fs.Stats.anyKey</a><code>: callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></li>
-            <ul>
-                <li><code>any</code> (whatever returns from) <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats.key&gt;</a></li>
-                <li>Returns <code>do_with_it_what_you_need</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Data_types">&lt;any&gt;</a></li>
-            </ul>
-            <li>...etc</li>
         </ul>
         <li><code>subBranchCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>branch => new Promise(resolve => resolve())</code></li>
         <ul>
