@@ -25,11 +25,11 @@ const { compoundCallbackSubTree, statCallback } = require("compound-callback-sub
             </ul>
             <li>Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">&lt;Promise&gt;</a></li>
             <ul>
-                <li><code>resolve</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve">&lt;param1&gt;</a></li>
+                <li><code>resolve</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve">&lt;Promise.resolve&gt;</a></li>
                 <ul>
                     <li><code>subBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a></li>
                 </ul>
-                <li><code>reject</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject">&lt;param2&gt;</a></li>
+                <li><code>reject</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/reject">&lt;Promise.reject&gt;</a></li>
             </ul>
         </ul>
     </ul>
