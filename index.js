@@ -13,19 +13,17 @@ const compoundCallbackSubTree = (options = {}, callback = tree => console.log(tr
     const subTree = (subPath, objSubTree) => new Promise((resolve, reject) =>
         fs.stat(subPath, (err, stats) => {
             if (err !== null)
-                reject();
+                reject("fs.stats() cought an error");
             if (stats.isDirectory())
                 dirStatsCb({ branch: objSubTree, stats }, () =>
                     fs.readdir(subPath, async (err, files) => {
                         if (err !== null)
-                            reject();
+                            reject("fs.readdir() cought an error");
                         for (const file of files) {
                             const nextPath = path.join(subPath, file);
-                            await new Promise(resolve =>
-                                subBranchCb({ path: subPath, nextPath, file, branch: objSubTree }).then(nextBranch => {
-                                    objSubTree[file] = nextBranch || {};
-                                    subTree(nextPath, objSubTree[file]).then(() => resolve());
-                                }).catch(() => resolve()));
+                            await new Promise(resolve => subBranchCb({ path: subPath, nextPath, file, branch: objSubTree })
+                                .then(nextBranch => subTree(nextPath, objSubTree[file] = nextBranch || {}).then(() => resolve()))
+                                .catch(() => resolve()));
                         }
                         resolve();
                     }));
