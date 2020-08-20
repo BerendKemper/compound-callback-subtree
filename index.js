@@ -10,25 +10,25 @@ const path = require("path");
 const compoundCallbackSubTree = (options = {}, callback = tree => console.log(tree)) => {
     if (typeof options === "function") callback = options;
     const { basePath = "./", dirStatsCb = (data, callback) => callback(), fileStatsCb = (data, callback) => callback(), subBranchCb = data => new Promise(resolve => resolve()) } = options;
-    const subTree = (subPath, objSubTree) => new Promise((resolve, reject) =>
+    const subTree = (subPath, branch) => new Promise((resolve, reject) =>
         fs.stat(subPath, (err, stats) => {
             if (err !== null)
                 reject("fs.stats() cought an error");
             if (stats.isDirectory())
-                dirStatsCb({ branch: objSubTree, stats }, () =>
+                dirStatsCb({ branch, stats }, () =>
                     fs.readdir(subPath, async (err, files) => {
                         if (err !== null)
                             reject("fs.readdir() cought an error");
                         for (const file of files) {
                             const nextPath = path.join(subPath, file);
-                            await new Promise(resolve => subBranchCb({ path: subPath, nextPath, file, branch: objSubTree })
-                                .then(nextBranch => subTree(nextPath, objSubTree[file] = nextBranch || {}).then(() => resolve()))
+                            await new Promise(resolve => subBranchCb({ path: subPath, nextPath, file, branch })
+                                .then(nextBranch => subTree(nextPath, branch[file] = nextBranch || {}).then(() => resolve()))
                                 .catch(() => resolve()));
                         }
                         resolve();
                     }));
             else if (stats.isFile())
-                fileStatsCb({ branch: objSubTree, stats }, () => resolve());
+                fileStatsCb({ branch, stats }, () => resolve());
         }));
     const baseTree = {};
     subTree(basePath, baseTree).then(() => callback(baseTree));
