@@ -1,6 +1,6 @@
 "use strict";
 const fs = require("fs");
-const path = require("path");
+const _path = require("path");
 /**@param {Object} options 
  * @param {String} options.basePath
  * @param {Function} options.dirStatsCb
@@ -20,7 +20,7 @@ const compoundCallbackSubTree = (options = {}, callback = tree => console.log(tr
                         if (err !== null)
                             reject("fs.readdir() cought an error");
                         for (const file of files) {
-                            const nextPath = path.join(subPath, file);
+                            const nextPath = _path.join(subPath, file);
                             await new Promise(resolve => subBranchCb({ path: subPath, nextPath, file, branch })
                                 .then(nextBranch => subTree(nextPath, branch[file] = nextBranch || {}).then(() => resolve()))
                                 .catch(() => resolve()));
@@ -30,7 +30,7 @@ const compoundCallbackSubTree = (options = {}, callback = tree => console.log(tr
             else if (stats.isFile())
                 fileStatsCb({ branch, stats }, () => resolve());
         }));
-    const baseTree = {};
-    subTree(basePath, baseTree).then(() => callback(baseTree));
+    const tree = {};
+    subTree(basePath, tree).then(() => callback(tree));
 };
 module.exports = Object.freeze({ compoundCallbackSubTree });
