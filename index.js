@@ -15,7 +15,7 @@ const compoundCallbackSubTree = (options = {}, callback = tree => console.log(tr
             if (err !== null)
                 reject("fs.stats() cought an error");
             if (stats.isDirectory())
-                dirStatsCb({ branch, stats }, () =>
+                dirStatsCb({ path: subPath, stats, branch }, () =>
                     fs.readdir(subPath, async (err, files) => {
                         if (err !== null)
                             reject("fs.readdir() cought an error");
@@ -28,7 +28,7 @@ const compoundCallbackSubTree = (options = {}, callback = tree => console.log(tr
                         resolve();
                     }));
             else if (stats.isFile())
-                fileStatsCb({ branch, stats }, () => resolve());
+                fileStatsCb({ path: subPath, stats, branch }, () => resolve());
         }));
     const tree = {};
     subTree(basePath, tree).then(() => callback(tree));
