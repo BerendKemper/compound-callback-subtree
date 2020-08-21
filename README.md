@@ -67,6 +67,7 @@ The <code>basepath</code> option allows the developer to specify in which base d
 const { compoundCallbackSubTree } = require("compound-cb-subtree");
 const { localeTimezoneDate, dateNotation, utc0 } = require("locale-timezone-date");
 const path = require("path");
+const { filesJSON, FileJSON } = require("files-json");
 // ...
 const e3sBytesNotation = function load() {
     const e3sBytes = { 0: "B", 1: "KB", 2: "MG", 3: "GB", 4: "TB", 5: "PB" };
@@ -81,9 +82,13 @@ const ignore = { ".git": true, ".gitignore": true };
 // ...
 compoundCallbackSubTree({
     subBranchCb: data => new Promise((resolve, reject) => {
-        if (!ignore[data.file])
+        if (data.file.endsWith(".json") && data.path.endsWith(data.file.substring(0, data.file.length - 5)))
+            new FileJSON(data.nextPath).then(fileJSON =>
+                fileJSON.close(reject(Object.assign(data.branch, fileJSON))));
+        else if (!ignore[data.file])
             resolve();
-        reject();
+        else
+            reject();
     }),
     dirStatsCb: (data, callback) => {
         data.branch["create-time"] = localeTimezoneDate.toISOString(new Date(data.stats.birthtimeMs));
@@ -99,27 +104,28 @@ compoundCallbackSubTree({
 }, tree => console.log("tree:", tree));
 // ...
 // returns
-// tree: {
-//   dirpath: 'D:\\js\\node_modules',
-//   'create-time': '2020-08-06T21:50:56.504+0200',
-//   'compound-cb-subtree': {
-//     dirpath: 'D:\\js\\node_modules\\compound-cb-subtree',
-//     'create-time': '2020-08-16T23:29:00.675+0200',
-//     'index.js': {
-//       filepath: 'D:\\js\\node_modules\\compound-cb-subtree\\index.js',
-//       'create-time': '2020-08-16T23:29:02.819+0200',
-//       'byte-size': '2.418 KB'
+//   tree: {
+//     'create-time': '2020-08-06T21:50:56.504+0200',
+//     dirpath: 'D:\\js\\node_modules\\',
+//     'compound-callback-subtree': {
+//       'create-time': '2020-08-16T23:29:00.675+0200',
+//       dirpath: 'D:\\js\\node_modules\\compound-callback-subtree',
+//------>'monkey says': 'hoehoehaha',
+//       'index.js': {
+//         'create-time': '2020-08-16T23:29:02.819+0200',
+//         'byte-size': '1.917 KB',
+//         filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\index.js'
+//       },
+//       'package.json': {
+//         'create-time': '2020-08-16T23:29:02.827+0200',
+//         'byte-size': '666 B',
+//         filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\package.json'
+//       },
+//       'README.md': {
+//         'create-time': '2020-08-16T23:29:02.813+0200',
+//         'byte-size': '10.193 KB',
+//         filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\README.md'
+//       }
 //     },
-//     'package.json': {
-//       filepath: 'D:\\js\\node_modules\\compound-cb-subtree\\package.json',
-//       'create-time': '2020-08-16T23:29:02.827+0200',
-//       'byte-size': '666 B'
-//     },
-//     'README.md': {
-//       filepath: 'D:\\js\\node_modules\\compound-cb-subtree\\README.md',
-//       'create-time': '2020-08-16T23:29:02.813+0200',
-//       'byte-size': '3.48 KB'
-//     }
-//   },
 //   // etc...
-// }</code></pre>
+//   }</code></pre>
