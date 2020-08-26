@@ -1,6 +1,6 @@
 {
     "name": "compound-callback-subtree",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "description": "A subtree method that offers great flexibility and features to the developer",
     "main": "index.js",
     "repository": {
