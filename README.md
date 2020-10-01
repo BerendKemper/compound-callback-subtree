@@ -200,7 +200,9 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 	</details>
 </ul>
 <h2>Example</h2>
-<pre><code>node_modules (root)
+```javascript
+/*
+node_modules (root)
 |__test.js
 |__compund-callback-subtree
 |     |__ .git
@@ -210,12 +212,12 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 |     |__ package.json
 |     |__ README.md
 |__etc...
-// ...
+*/*
 const CompoundCallbackSubTree = require("compound-cb-subtree");
 const { localeTimezoneDate, dateNotation, utc0 } = require("locale-timezone-date");
 const path = require("path");
 const { filesJSON, FileJSON } = require("files-json");
-// ...
+
 const e3sBytesNotation = function load() {
     const e3sBytes = { 0: "B", 1: "KB", 2: "MG", 3: "GB", 4: "TB", 5: "PB" };
     return byteLength => {
@@ -226,7 +228,7 @@ const e3sBytesNotation = function load() {
     }
 }();
 const ignore = { ".git": true, ".gitignore": true };
-// ...
+
 const routineSubTree = new CompoundCallbackSubTree({
 	subBranchCb: (data, nextBranch, blockBranch) => {
 		if (data.file.endsWith(".json") && data.dirpath.endsWith(data.file.substring(0, data.file.length - 5))) {
@@ -253,8 +255,9 @@ const routineSubTree = new CompoundCallbackSubTree({
 		callback();
 	}
 });
-// ...
+
 routineSubTree.fromPath("./", tree => console.log("tree:", tree));
+/*
 // returns
 //   tree: {
 //     'create-time': '2020-08-06T21:50:56.504+0200',
@@ -280,4 +283,6 @@ routineSubTree.fromPath("./", tree => console.log("tree:", tree));
 //       }
 //     },
 //   // etc...
-//   }</code></pre>
+//   }
+*/
+```
