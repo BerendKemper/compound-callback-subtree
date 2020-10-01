@@ -216,7 +216,7 @@ node_modules (root)
 |           |__ etc... 
 |__etc...
 */
-const CompoundCallbackSubTree = require("compound-cb-subtree");
+const CompoundCallbackSubTree = require("compound-callback-subtree");
 const { localeTimezoneDate, dateNotation, utc0 } = require("locale-timezone-date");
 const path = require("path");
 const { filesJSON, FileJSON } = require("files-json");
