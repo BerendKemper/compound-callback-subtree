@@ -4,7 +4,7 @@ A subtree method that offers great flexibility and features to the developer.
 
 const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code></pre>
 <h2>Class: <code>CompoundCallbackSubTree</code></h2>
-<h3><code>CompoundCallbackSubTree.fromPath(pathName[,callback])</code></h3>
+<h3><code>CompoundCallbackSubTree.fromPath(basePath[,callback])</code></h3>
 <ul>
     <details>
 		<summary>
@@ -39,12 +39,20 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
 		</summary>
     	<ul>
-        	<li><code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a></li>
-        	<li><code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
+			<details>
+				<summary>
+					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
+				</summary>
+				The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">Null</a> unless there is no tree in the cache, the callback will return the an error.
+			</details>
+			<details>
+				<summary>
+					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
+				</summary>
+			</details>
     	</ul>
 	</details>
 </ul>
-The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">Null</a> unless there is no tree in the cache, the callback will return the an error.
 <h3><code>new CompoundCallbackSubTree([options])</code></h3>
 <ul>
 	<details>
