@@ -6,11 +6,9 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 <h2>Class: <code>CompoundCallbackSubTree</code></h2>
 <h3><code>CompoundCallbackSubTree.fromPath(pathName[,callback])</code></h3>
 <ul>
-    <details>
-		<summary>
-			<code>basePath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
-		</summary>
-	</details>
+	<summary>
+		<code>basePath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
+	</summary>
 	<details>
 		<summary>
 			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
