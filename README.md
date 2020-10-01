@@ -81,7 +81,7 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 								<summary>
 									<code>stats</code> <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a>
 								</summary>
-								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can choose to add it's properties to the <code>branch</code> Object.
+								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can choose to add individual properties to the <code>branch</code> Object.
 							</details>
 							<details>
 								<summary>
@@ -112,13 +112,13 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 								<summary>
 									<code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 								</summary>
-								The <code>path</code> property shows the <code>path</code> from the sub-file and the developer can choose to add it the <code>branch</code> Object. The <code>path</code> from files could be usefull when allowing the front-end to fetch the file's content.
+								The <code>path</code> property shows the <code>path</code> from the sub-file and the developer can choose to add it the <code>branch</code> Object. The <code>path</code> from sub-files could be usefull when allowing the front-end to fetch the file's content from the back-end.
 							</details>
 							<details>
 								<summary>
 									<code>stats</code> <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a>
 								</summary>
-								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can choose to add it's properties to the <code>branch</code> Object.
+								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can choose to add individual properties to the <code>branch</code> Object.
 							</details>
 							<details>
 								<summary>
@@ -140,18 +140,46 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 					<code>subBranchCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, nextBranch, blockBranch) => nextBranch()</code>
 				</summary>
 				<ul>
-					<li><code>data</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a><b>Required!</b></li>
-					<ul>
-						<li><code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
-						<li><code>dirpath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
-						<li><code>file</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
-						<li><code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
-					</ul>
-					<li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b></li>
-					<ul>
-						<li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a></li>
-					</ul>
-					<li><code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> Optional</li>
+					<details>
+						<summary>
+							<code>data</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a><b>Required!</b>
+						</summary>
+						<ul>
+							<details>
+								<summary>
+									<code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
+								</summary>
+							</details>
+							<details>
+								<summary>
+									<code>dirpath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
+								</summary>
+							</details>
+							<details>
+								<summary>
+									<code>file</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
+								</summary>
+							</details>
+							<details>
+								<summary>
+									<code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
+								</summary>
+							</details>
+						</ul>
+					</details>
+					<details>
+						<summary>
+							<code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b>
+						</summary>
+						<ul>
+							<li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a></li>
+						</ul>
+					</details>
+					<details>
+						<summary>
+							<code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> Optional
+						</summary>
+					</details>
 				</ul>
 			</details>
 		</ul>
