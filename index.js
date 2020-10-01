@@ -74,7 +74,7 @@ class CompoundCallbackSubTree {
 	*  @param {Function} options.subBranchCb */
 	constructor(options = {}) {
 		const privateTree = new PrivateTree(options);
-		this.fromPath = function fromPath(publish, callback = (error, tree) => console.log(tree)) {
+		this.fromPath = function fromPath(basePath, callback = (error, tree) => console.log(tree)) {
 			return privateTree.fromPath(basePath, callback);
 		};
 		this.fromCache = function fromCache(callback = (error, tree) => console.log(tree)) {
