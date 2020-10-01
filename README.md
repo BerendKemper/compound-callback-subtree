@@ -1,10 +1,9 @@
 # compound-callback-subtree
 A subtree method that offers great flexibility and features to the developer.
-<pre><code>npm i compound-callback-subtree
+<pre><code>npm i compound-callback-subtree</code></pre>
 ```javascript
 const CompoundCallbackSubTree = require("compound-callback-subtree");
 ```
-</code></pre>
 <h2>Class: <code>CompoundCallbackSubTree</code></h2>
 <h3><code>CompoundCallbackSubTree.fromPath(basePath[,callback])</code></h3>
 <ul>
