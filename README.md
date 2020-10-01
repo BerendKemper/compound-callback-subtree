@@ -168,7 +168,7 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 								<summary>
 									<code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
 								</summary>
-								The <code>dirbranch</code> that may or may not recursively contain the <code>file</code> as key and the next created <code>branch</code> as value, depending on wether <code>nextBranch</code> or <code>blockBranch</code> is called. The developer can choose to add additional information to the <code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>. Check out the example below of how the content from a json-file (e.g. a configuration file) is added to the <code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>.
+								The <code>dirbranch</code> that may or may not recursively contain the <code>file</code> as key and the next created <code>branch</code> as value, depending on wether <code>nextBranch</code> or <code>blockBranch</code> is called. The developer can choose to add additional information to the <code>dirbranch</code>. Check out the example below of how the content from a json-file (e.g. a configuration file) is added to the <code>dirbranch</code>.
 							</details>
 						</ul>
 					</details>
