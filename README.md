@@ -212,6 +212,8 @@ node_modules (root)
 |     |__ index.js
 |     |__ package.json
 |     |__ README.md
+|     |__ v2.0.0
+|           |__ etc... 
 |__etc...
 */
 const CompoundCallbackSubTree = require("compound-cb-subtree");
