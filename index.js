@@ -21,7 +21,7 @@ PrivateTree.prototype.subBranch = function subBranch(path) {
 };
 PrivateTree.prototype.onStat = function onStat(error, stats, path) {
 	if (error !== null)
-		this.callback(error);
+		this.callback(error, null);
 	this.branchData[path].stats = stats
 	if (stats.isDirectory())
 		this.dirStatsCb(this.branchData[path], () => this.onDirStatsCb(path));
@@ -33,7 +33,7 @@ PrivateTree.prototype.onDirStatsCb = function onDirStatsCb(dirpath) {
 };
 PrivateTree.prototype.onReaddir = function onReaddir(error, files, dirpath) {
 	if (error !== null)
-		this.callback(error);
+		this.callback(error, null);
 	this.counter--;
 	for (const file of files) {
 		this.counter++;
@@ -56,12 +56,12 @@ PrivateTree.prototype.checkTreeFinished = function checkTreeFinished() {
 PrivateTree.prototype.clearCache = function clearCache() {
 	const branch = this.branchData[this.basepath].branch;
 	for (const callback of this.cacheQueue)
-		callback(branch);
+		callback(null, branch);
 	this.cacheQueue = [];
 };
 PrivateTree.prototype.fromCache = function fromCache(callback) {
 	if (this.counter === undefined)
-		callback(new Error("nothing in cache..."));
+		callback(new Error("nothing in cache..."), null);
 	if (this.counter === 0)
 		callback(null, this.branchData[this.basepath].branch);
 	else
