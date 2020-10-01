@@ -217,7 +217,7 @@ const CompoundCallbackSubTree = require("compound-cb-subtree");
 const { localeTimezoneDate, dateNotation, utc0 } = require("locale-timezone-date");
 const path = require("path");
 const { filesJSON, FileJSON } = require("files-json");
-
+//
 const e3sBytesNotation = function load() {
     const e3sBytes = { 0: "B", 1: "KB", 2: "MG", 3: "GB", 4: "TB", 5: "PB" };
     return byteLength => {
@@ -228,7 +228,7 @@ const e3sBytesNotation = function load() {
     }
 }();
 const ignore = { ".git": true, ".gitignore": true };
-
+//
 const routineSubTree = new CompoundCallbackSubTree({
 	subBranchCb: (data, nextBranch, blockBranch) => {
 		if (data.file.endsWith(".json") && data.dirpath.endsWith(data.file.substring(0, data.file.length - 5))) {
@@ -255,7 +255,7 @@ const routineSubTree = new CompoundCallbackSubTree({
 		callback();
 	}
 });
-
+//
 routineSubTree.fromPath("./", tree => console.log("tree:", tree));
 /*
 // returns
