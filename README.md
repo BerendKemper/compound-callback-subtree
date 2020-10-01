@@ -196,7 +196,7 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 				After <code>dirStatsCb</code>, <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> will be fired to find all files contained within the directory and every file will be passed through <code>subBranchCb</code>.
 			</details>
 		</ul>
-		A thing that is composed of two or more separate elements, a mixture.
+		A substance formed from two or more elements chemically united in fixed proportions.
 	</details>
 </ul>
 <h2>Example</h2>
