@@ -49,6 +49,7 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 				<summary>
 					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
 				</summary>
+				Check out the the example below to see a tree.
 			</details>
     	</ul>
 	</details>
