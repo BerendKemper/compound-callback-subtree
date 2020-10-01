@@ -200,6 +200,7 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 	</details>
 </ul>
 <h2>Example</h2>
+
 ```javascript
 /*
 node_modules (root)
@@ -212,7 +213,7 @@ node_modules (root)
 |     |__ package.json
 |     |__ README.md
 |__etc...
-*/*
+*/
 const CompoundCallbackSubTree = require("compound-cb-subtree");
 const { localeTimezoneDate, dateNotation, utc0 } = require("locale-timezone-date");
 const path = require("path");
