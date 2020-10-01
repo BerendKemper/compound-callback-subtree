@@ -149,21 +149,25 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 								<summary>
 									<code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 								</summary>
+								The <code>path</code> is created by passing over <code>dirpath</code> and <code>file</code> through <a href="https://nodejs.org/dist/latest-v12.x/docs/api/path.html#path_path_join_paths">path.join()</a>. This method is compatible on Windos and Linux OS.
 							</details>
 							<details>
 								<summary>
 									<code>dirpath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 								</summary>
+								The <code>path</code> from <code>dirbranch</code> above.
 							</details>
 							<details>
 								<summary>
 									<code>file</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 								</summary>
+								The name of the file being found from the <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> that was called on the <code>path</code> from <code>dirbranch</code> above.
 							</details>
 							<details>
 								<summary>
 									<code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
 								</summary>
+								The <code>dirbranch</code> that will recursively contain the <code>file</code> as key and the next created <code>branch</code> as value.
 							</details>
 						</ul>
 					</details>
@@ -176,16 +180,19 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 								<summary>
 									<code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a>
 								</summary>
+								In case an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> representing the <code>nextBranch</code> is passed over as an argument to the <code>nextBrnach</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> this object will become the nextBranch instead of an empty Object. The developer can add additional properties to the <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>. Check out the example below of how the content from a json-file (for examplee a configuration file) is added to the <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>.
 							</details>
 						</ul>
+						The <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> is a callback that will trigger another recursive sub-tree process.
 					</details>
 					<details>
 						<summary>
 							<code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> Optional
 						</summary>
+						The <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> is a callback that will stop any further recursive sub-tree. The developer can use this to ignore particular files and directories depending on the <code>name</code> of the file that is found within the <code>data</code> parameter.
 					</details>
 				</ul>
-				After <code>dirStatsCb</code> <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> will find all files contained in the directory and every file will be passed through <code>subBranchCb</code>.
+				After <code>dirStatsCb</code>, <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> will be fired to find all files contained in the directory and every file will be passed through <code>subBranchCb</code>.
 			</details>
 		</ul>
 	</details>
