@@ -10,18 +10,28 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 		<summary>
 			<code>basePath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 		</summary>
+		The <code>basepath</code> option allows the developer to specify in which base directory a subtree must be generated from.
 	</details>
 	<details>
 		<summary>
 			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
 		</summary>
     	<ul>
-        	<li><code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a></li>
-        	<li><code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
+			<details>
+				<summary>
+					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
+				</summary>
+				The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">Null</a> unless the internal methods <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_stat_path_options_callback">fs.stats()</a> or <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> return an error, the callback will return the error.
+			</details>
+			<details>
+				<summary>
+					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
+				</summary>
+				Check out the the example below to see a tree.
+			</details>
     	</ul>
 	</details>
 </ul>
-The <code>basepath</code> option allows the developer to specify in which base directory a subtree must be generated from. The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">Null</a> unless the internal methods <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_stat_path_options_callback">fs.stats()</a> or <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> return an error, the callback will return the error.
 <h3><code>CompoundCallbackSubTree.fromCache([callback])</code></h3>
 <ul>
 	<details>
@@ -44,7 +54,7 @@ The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/Ja
 		<ul>
 			<details>
 				<summary>
-					<code>dirStatsCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, callback) => callback()</code>
+					<code>dirStatsCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, callback) => callback()</code> Optionals
 				</summary>
 				<ul>
 					<li><code>data</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
@@ -58,7 +68,7 @@ The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/Ja
 			</details>
 			<details>
 				<summary>
-					<code>fileStatsCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, callback) => callback()</code>
+					<code>fileStatsCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, callback) => callback()</code> Optional
 				</summary>
 				<ul>
 					<li><code>data</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
@@ -97,8 +107,9 @@ The <code>dirStatsCb</code> and <code>fileStatsCb</code> options are optional fu
 <pre><code>node_modules (root)
 |__test.js
 |__compund-callback-subtree
-|     |__ .git.js
-|     |     |__ etc...
+|     |__ .git
+|     |     |__ etc... 
+|     |__ compound-callback-subtree.json
 |     |__ index.js
 |     |__ package.json
 |     |__ README.md
@@ -121,31 +132,33 @@ const e3sBytesNotation = function load() {
 const ignore = { ".git": true, ".gitignore": true };
 // ...
 const routineSubTree = new CompoundCallbackSubTree({
-    subBranchCb: data => new Promise((resolve, reject) => {
-        if (data.file.endsWith(".json") && data.path.endsWith(data.file.substring(0, data.file.length - 5))) {
-            console.log("triggered!")
-            new FileJSON(data.nextPath).then(fileJSON =>
-                fileJSON.close(reject(Object.assign(data.branch, fileJSON))));
-        }
-        else if (!ignore[data.file])
-            resolve();
-        else
-            reject();
-    }),
-    dirStatsCb: (data, callback) => {
-        data.branch["create-time"] = localeTimezoneDate.toISOString(new Date(data.stats.birthtimeMs));
-        data.branch.dirpath = path.join(__dirname, data.path);
-        callback();
-    },
-    fileStatsCb: (data, callback) => {
-        data.branch["create-time"] = localeTimezoneDate.toISOString(new Date(data.stats.birthtimeMs));
-        data.branch["byte-size"] = e3sBytesNotation(data.stats.size);
-        data.branch.filepath = path.join(__dirname, data.path);
-        callback();
-    }
+	subBranchCb: (data, nextBranch, blockBranch) => {
+		if (data.file.endsWith(".json") && data.dirpath.endsWith(data.file.substring(0, data.file.length - 5))) {
+			console.log("triggered!");
+			new FileJSON(data.path, fileJSON => {
+				Object.assign(data.dirbranch, fileJSON);
+				fileJSON.close(blockBranch());
+			});
+		}
+		else if (!ignore[data.file])
+			nextBranch();
+		else
+			blockBranch();
+	},
+	dirStatsCb: (data, callback) => {
+		data.branch["create-time"] = localeTimezoneDate.toISOString(new Date(data.stats.birthtimeMs));
+		data.branch.dirpath = path.join(__dirname, data.path);
+		callback();
+	},
+	fileStatsCb: (data, callback) => {
+		data.branch["create-time"] = localeTimezoneDate.toISOString(new Date(data.stats.birthtimeMs));
+		data.branch["byte-size"] = e3sBytesNotation(data.stats.size);
+		data.branch.filepath = path.join(__dirname, data.path);
+		callback();
+	}
 });
 // ...
-routineSubTree.subTree("./", tree => console.log("tree:", tree));
+routineSubTree.fromPath("./", tree => console.log("tree:", tree));
 // returns
 //   tree: {
 //     'create-time': '2020-08-06T21:50:56.504+0200',
