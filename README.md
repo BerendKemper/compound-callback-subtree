@@ -259,31 +259,36 @@ const routineSubTree = new CompoundCallbackSubTree({
 //
 routineSubTree.fromPath("./", tree => console.log("tree:", tree));
 /*
-// returns
-//   tree: {
-//     'create-time': '2020-08-06T21:50:56.504+0200',
-//     dirpath: 'D:\\js\\node_modules\\',
-//     'compound-callback-subtree': {
-//       'create-time': '2020-08-16T23:29:00.675+0200',
-//       dirpath: 'D:\\js\\node_modules\\compound-callback-subtree',
-//------>'monkey says': 'hoehoehaha',
-//       'index.js': {
-//         'create-time': '2020-08-16T23:29:02.819+0200',
-//         'byte-size': '1.917 KB',
-//         filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\index.js'
-//       },
-//       'package.json': {
-//         'create-time': '2020-08-16T23:29:02.827+0200',
-//         'byte-size': '666 B',
-//         filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\package.json'
-//       },
-//       'README.md': {
-//         'create-time': '2020-08-16T23:29:02.813+0200',
-//         'byte-size': '10.193 KB',
-//         filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\README.md'
-//       }
-//     },
-//   // etc...
-//   }
+returns
+tree: {
+	'create-time': '2020-08-06T21:50:56.504+0200',
+	dirpath: 'D:\\js\\node_modules\\',
+	'compound-callback-subtree': {
+		'create-time': '2020-08-16T23:29:00.675+0200',
+		dirpath: 'D:\\js\\node_modules\\compound-callback-subtree',
+		'index.js': {
+			'create-time': '2020-09-25T00:10:09.176+0200',
+			'byte-size': '3.33 KB',
+			filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\index.js'
+		},
+		'package.json': {
+			'create-time': '2020-08-16T23:29:02.827+0200',
+			'byte-size': '633 B',
+			filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\package.json'
+		},
+		'README.md': {
+			'create-time': '2020-08-16T23:29:02.813+0200',
+			'byte-size': '15.227 KB',
+			filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\README.md'
+		},
+		'v2.0.0': {
+			'create-time': '2020-09-30T11:11:19.262+0200',
+			dirpath: 'D:\\js\\node_modules\\compound-callback-subtree\\v2.0.0',
+			'index_old.js': [Object]
+		},
+		'monkey says': 'hoehoehaha'
+	},
+	// etc...
+}
 */
 ```
