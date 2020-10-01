@@ -172,7 +172,11 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 							<code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b>
 						</summary>
 						<ul>
-							<li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a></li>
+							<details>
+								<summary>
+									<code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a>
+								</summary>
+							</details>
 						</ul>
 					</details>
 					<details>
@@ -181,6 +185,7 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 						</summary>
 					</details>
 				</ul>
+				After <code>dirStatsCb</code> <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> will find all files contained in the directory and every file will be passed through <code>subBranchCb</code>.
 			</details>
 		</ul>
 	</details>
