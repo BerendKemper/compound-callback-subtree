@@ -75,17 +75,19 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 								<summary>
 									<code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 								</summary>
+								The <code>path</code> property shows the <code>path</code> from the sub-directory and the developer can choose to add it the <code>branch</code> Object.
 							</details>
 							<details>
 								<summary>
 									<code>stats</code> <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a>
 								</summary>
-								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can add properties to the <code>branch</code> Object.
+								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can choose to add it's properties to the <code>branch</code> Object.
 							</details>
 							<details>
 								<summary>
 									<code>branch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
 								</summary>
+								Check out the the example below to see the branches from a tree.
 							</details>
 						</ul>
 					</details>
@@ -110,17 +112,19 @@ const { CompoundCallbackSubTree } = require("compound-callback-subtree");</code>
 								<summary>
 									<code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
 								</summary>
+								The <code>path</code> property shows the <code>path</code> from the sub-file and the developer can choose to add it the <code>branch</code> Object. The <code>path</code> from files could be usefull when allowing the front-end to fetch the file's content.
 							</details>
 							<details>
 								<summary>
 									<code>stats</code> <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a>
 								</summary>
-								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can add properties to the <code>branch</code> Object.
+								The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and the developer can choose to add it's properties to the <code>branch</code> Object.
 							</details>
 							<details>
 								<summary>
 									<code>branch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
 								</summary>
+								Check out the the example below to see the branches from a tree.
 							</details>
 						</ul>
 					</details>
