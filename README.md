@@ -220,13 +220,13 @@ const path = require("path");
 const { filesJSON, FileJSON } = require("files-json");
 //
 const e3sBytesNotation = function load() {
-    const e3sBytes = { 0: "B", 1: "KB", 2: "MG", 3: "GB", 4: "TB", 5: "PB" };
-    return byteLength => {
-        let e3s = 0;
-        while (byteLength >= 1024 && e3sBytes[e3s++])
-            byteLength /= 1024;
-        return `${byteLength} ${e3sBytes[e3s]}`;
-    }
+	const e3sBytes = { 0: "B", 1: "KB", 2: "MG", 3: "GB", 4: "TB", 5: "PB" };
+	return byteLength => {
+		let e3s = 0;
+		while (byteLength >= 1024 && e3sBytes[e3s++])
+			byteLength /= 1024;
+		return `${byteLength} ${e3sBytes[e3s]}`;
+	}
 }();
 const ignore = { ".git": true, ".gitignore": true };
 //
