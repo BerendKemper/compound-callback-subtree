@@ -55,21 +55,25 @@ The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/Ja
             	<li><code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b></li>
         	</ul>
 		</details>
-        <li><code>subBranchCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, nextBranch, blockBranch) => nextBranch()</code></li>
-        <ul>
-            <li><code>data</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
-            <ul>
-                <li><code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
-                <li><code>dirpath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
-                <li><code>file</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
-                <li><code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
-            </ul>
-            <li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b></li>
-            <ul>
-                <li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a></li>
-            </ul>
-            <li><code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> Optional</li>
-        </ul>
+        <details>
+			<summary>
+        		<code>subBranchCb</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(data, nextBranch, blockBranch) => nextBranch()</code>
+			</summary>
+        	<ul>
+            	<li><code>data</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
+            	<ul>
+                	<li><code>path</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
+                	<li><code>dirpath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
+               		<li><code>file</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a></li>
+                	<li><code>dirbranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a></li>
+            	</ul>
+            	<li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b></li>
+            	<ul>
+                	<li><code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a></li>
+            	</ul>
+            	<li><code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> Optional</li>
+        	</ul>
+		</details>
     </ul>
 </ul>
 The <code>dirStatsCb</code> and <code>fileStatsCb</code> options are optional functions with required <code>data</code> and <code>callback</code> parameters. The <code>data</code> object contains the properties <code>path</code>, <code>stats</code> and <code>branch</code>. The <code>stats</code> property is an <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_class_fs_stats">&lt;fs.Stats&gt;</a> Object and it allows the developer to add properties to the <code>branch</code> Object. The <code>path</code> property allows the developer to add the <code>path</code> from either files or directories to the <code>branch</code> Object. The <code>subBranchCb</code> option is another optional function that has an <code>data</code> parameter. The <code>data</code> object contains the properties <code>path</code>, <code>nextPath</code>, <code>file</code> and <code>branch</code>. These properties represent the current <code>path</code>, the <code>file</code> found in the current directory (this can either be a file or directory), when the <code>path</code> is <a href="https://nodejs.org/dist/latest-v12.x/docs/api/path.html#path_path_join_paths">join</a>ed with the <code>file</code> the <code>nextPath</code> is the result and the so-far generated <code>branch</code>. The <code>subBranchCb</code> function must return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">&lt;Promise&gt;</a>. Important to understand is that when the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">&lt;Promise&gt;</a> <code>resolves</code> the <code>subTree</code> will recursively go deeper into sub-branches. When the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">&lt;Promise&gt;</a> <code>rejects</code> the <code>subTree</code> will not go any deeper. That means that with the <code>file</code> parameter the developer can determine if a file or directory should be ignored. The developer can also choose to <code>resolve</code> the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">&lt;Promise&gt;</a> with an Object. This Object represents the <code>nextBranch</code> and if this Object is given properties then they will be added to the next-branch. Check out the the example below to see it all in action.
