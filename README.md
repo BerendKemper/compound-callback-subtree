@@ -20,9 +20,9 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
     	<ul>
 			<details>
 				<summary>
-					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
+					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
 				</summary>
-				The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">Null</a> unless the internal methods <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_stat_path_options_callback">fs.stats()</a> or <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> return an error, the callback will return the error.
+				Is an error in case the methods <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_stat_path_options_callback">fs.stats()</a> or <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> had failed.
 			</details>
 			<details>
 				<summary>
@@ -42,9 +42,9 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
     	<ul>
 			<details>
 				<summary>
-					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
+					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
 				</summary>
-				The <code>err</code> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">Null</a> unless there is no tree in the cache, the callback will return the an error.
+				Is an error in case no tree is in the cache.
 			</details>
 			<details>
 				<summary>
