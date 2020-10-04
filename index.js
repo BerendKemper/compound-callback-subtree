@@ -50,10 +50,10 @@ InternalTree.prototype.onSubBranchCb = function onSubBranchCb(path, file, nextbr
 InternalTree.prototype.checkTreeFinished = function checkTreeFinished() {
 	if (--this.counter === 0) {
 		this.returnTree();
-		this.clearCache();
+		this.clearCacheQueue();
 	}
 };
-InternalTree.prototype.clearCache = function clearCache() {
+InternalTree.prototype.clearCacheQueue = function clearCacheQueue() {
 	const branch = this.branchData[this.basepath].branch;
 	for (const callback of this.cacheQueue)
 		callback(null, branch);
