@@ -84,6 +84,6 @@ class CompoundCallbackSubTree {
 			internalTree.fromCache(callback);
 		};
 		Object.freeze(this);
-	}
+	};
 };
 module.exports = CompoundCallbackSubTree;
