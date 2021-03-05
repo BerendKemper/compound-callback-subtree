@@ -62,7 +62,9 @@ InternalTree.prototype = {
 			this.cacheQueue.push(callback);
 	}
 };
-const internalTrees = new WeakMap();
+const accessKey = Symbol("Internal Tree");
+const accessError = new Error("The internalTree is off limits.");
+const callbackFailure = () => console.log("This method is supposed be invoked under the hood.");
 /**Compose your desired Tree of (sub) file and folders.
  * write your desired directory- and file-stats-callbacks to add fs.Stats data to a branch.
  * Write your desired sub-branch-callback to block particular folder or files from 
@@ -73,32 +75,30 @@ const internalTrees = new WeakMap();
  * @param {Function} options.subBranchCb
  */
 function CompoundCallbackSubTree(options = {}) {
-	if (this instanceof CompoundCallbackSubTree) {
-		internalTrees.set(this, new InternalTree(this));
-		if (options.dirStatsCb)
-			this.dirStatsCb = options.dirStatsCb;
-		if (options.fileStatsCb)
-			this.fileStatsCb = options.fileStatsCb;
-		if (options.subBranchCb)
-			this.subBranchCb = options.subBranchCb;
-	}
-	else
+	if (this instanceof CompoundCallbackSubTree === false)
 		throw TypeError(`Class constructors cannot be invoked without 'new'`);
+	const internalTree = new InternalTree(this)
+	this.getInternalTree = key => key === accessKey ? internalTree : accessError;
+	if (options.dirStatsCb)
+		this.dirStatsCb = options.dirStatsCb;
+	if (options.fileStatsCb)
+		this.fileStatsCb = options.fileStatsCb;
+	if (options.subBranchCb)
+		this.subBranchCb = options.subBranchCb;
 };
-const callbackFailure = () => console.log("This method is supposed be invoked under the hood.");
 CompoundCallbackSubTree.prototype = {
 	/**Get a Tree from all the (sub) files and folders from a basePath
 	 * @param {String} basePath 
 	 * @param {Function} callback
 	 */
 	fromPath(basePath, callback = console.log) {
-		internalTrees.get(this).fromPath(basePath, callback);
+		this.getInternalTree(accessKey).fromPath(basePath, callback);
 	},
 	/**Get the Tree that was returned from the previous call to fromPath.
 	 * @param {Function} callback 
 	 */
 	fromCache(callback = console.log) {
-		internalTrees.get(this).fromCache(callback);
+		this.getInternalTree(accessKey).fromCache(callback);
 	},
 	/**
 	 * @param {Object} data
