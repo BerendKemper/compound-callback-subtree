@@ -2,8 +2,8 @@
 const fs = require("fs");
 const { Stats } = fs;
 const _path = require("path");
-function InternalTree(externalTree) {
-	this.externalTree = externalTree;
+function InternalTree(parent) {
+	this.parent = parent;
 	this.cacheQueue = [];
 };
 InternalTree.prototype = {
@@ -22,9 +22,9 @@ InternalTree.prototype = {
 			this.callback(error, null);
 		this.branchData[path].stats = stats
 		if (stats.isDirectory())
-			this.externalTree.dirStatsCb(this.branchData[path], () => this.onDirStatsCb(path));
+			this.parent.dirStatsCb(this.branchData[path], () => this.onDirStatsCb(path));
 		else if (stats.isFile())
-			this.externalTree.fileStatsCb(this.branchData[path], () => this.clearCacheQueueOnTreeFinished());
+			this.parent.fileStatsCb(this.branchData[path], () => this.clearCacheQueueOnTreeFinished());
 	},
 	onDirStatsCb(dirpath) {
 		fs.readdir(dirpath, (error, files) => this.onReaddir(error, files, dirpath));
@@ -36,7 +36,7 @@ InternalTree.prototype = {
 		for (const file of files) {
 			const path = _path.join(dirpath, file);
 			this.branchData[path] = { path, dirpath, file, dirbranch: this.branchData[dirpath].branch };
-			this.externalTree.subBranchCb(this.branchData[path], nextbranch => this.onSubBranchCb(path, file, nextbranch), () => this.clearCacheQueueOnTreeFinished());
+			this.parent.subBranchCb(this.branchData[path], nextbranch => this.onSubBranchCb(path, file, nextbranch), () => this.clearCacheQueueOnTreeFinished());
 		};
 	},
 	onSubBranchCb(path, file, nextbranch) {
@@ -62,44 +62,30 @@ InternalTree.prototype = {
 			this.cacheQueue.push(callback);
 	}
 };
-const accessKey = Symbol("Internal Tree");
-const accessError = new Error("The internalTree is off limits.");
-const callbackFailure = () => console.log("This method is supposed be invoked under the hood.");
-/**Compose your desired Tree of (sub) file and folders.
- * write your desired directory- and file-stats-callbacks to add fs.Stats data to a branch.
- * Write your desired sub-branch-callback to block particular folder or files from 
- * being added to the branch or add additional data to the directory's branch
- * @param {Object} options 
- * @param {Function} options.dirStatsCb
- * @param {Function} options.fileStatsCb
- * @param {Function} options.subBranchCb
- */
-function CompoundCallbackSubTree(options = {}) {
-	if (this instanceof CompoundCallbackSubTree === false)
-		throw TypeError(`Class constructors cannot be invoked without 'new'`);
-	const internalTree = new InternalTree(this)
-	this.getInternalTree = key => key === accessKey ? internalTree : accessError;
-	if (options.dirStatsCb)
-		this.dirStatsCb = options.dirStatsCb;
-	if (options.fileStatsCb)
-		this.fileStatsCb = options.fileStatsCb;
-	if (options.subBranchCb)
-		this.subBranchCb = options.subBranchCb;
-};
-CompoundCallbackSubTree.prototype = {
+class CompoundCallbackSubTree {
+	#private;
+	constructor(options = {}) {
+		this.#private = new InternalTree(this);
+		if (options.dirStatsCb)
+			this.dirStatsCb = options.dirStatsCb;
+		if (options.fileStatsCb)
+			this.fileStatsCb = options.fileStatsCb;
+		if (options.subBranchCb)
+			this.subBranchCb = options.subBranchCb;
+	};
 	/**Get a Tree from all the (sub) files and folders from a basePath
 	 * @param {String} basePath 
 	 * @param {Function} callback
 	 */
 	fromPath(basePath, callback = console.log) {
-		this.getInternalTree(accessKey).fromPath(basePath, callback);
-	},
+		this.#private.fromPath(basePath, callback);
+	};
 	/**Get the Tree that was returned from the previous call to fromPath.
 	 * @param {Function} callback 
 	 */
 	fromCache(callback = console.log) {
-		this.getInternalTree(accessKey).fromCache(callback);
-	},
+		this.#private.fromCache(callback);
+	};
 	/**
 	 * @param {Object} data
 	 * @param {String} data.path
@@ -109,7 +95,7 @@ CompoundCallbackSubTree.prototype = {
 	 */
 	dirStatsCb(data, callback = callbackFailure) {
 		callback();
-	},
+	};
 	/**
 	 * @param {Object} data
 	 * @param {String} data.path
@@ -119,7 +105,7 @@ CompoundCallbackSubTree.prototype = {
 	 */
 	fileStatsCb(data, callback = callbackFailure) {
 		callback();
-	},
+	};
 	/**
 	 * @param {Object} data 
 	 * @param {String} data.path
@@ -132,6 +118,6 @@ CompoundCallbackSubTree.prototype = {
 	 */
 	subBranchCb(data, cbs = { nextBranch: callbackFailure }) {
 		cbs.nextBranch();
-	}
-};
+	};
+}
 module.exports = CompoundCallbackSubTree;
