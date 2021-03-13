@@ -2,89 +2,79 @@
 const fs = require("fs");
 const { Stats } = fs;
 const _path = require("path");
-function InternalTree(parent) {
-	this.parent = parent;
-	this.cacheQueue = [];
-};
-InternalTree.prototype = {
-	fromPath(path, callback) {
-		this.tree = {};
-		this.counter = 1;
-		this.branchData = { [path]: { path, branch: this.tree } };
-		this.callback = callback;
-		this.subBranch(path);
-	},
-	subBranch(path) {
-		fs.stat(path, (error, stats) => this.onStat(error, stats, path));
-	},
-	onStat(error, stats, path) {
-		if (error !== null)
-			this.callback(error, null);
-		this.branchData[path].stats = stats
-		if (stats.isDirectory())
-			this.parent.dirStatsCb(this.branchData[path], () => this.onDirStatsCb(path));
-		else if (stats.isFile())
-			this.parent.fileStatsCb(this.branchData[path], () => this.clearCacheQueueOnTreeFinished());
-	},
-	onDirStatsCb(dirpath) {
-		fs.readdir(dirpath, (error, files) => this.onReaddir(error, files, dirpath));
-	},
-	onReaddir(error, files, dirpath) {
-		if (error !== null)
-			this.callback(error, null);
-		this.counter += files.length - 1;
-		for (const file of files) {
-			const path = _path.join(dirpath, file);
-			this.branchData[path] = { path, dirpath, file, dirbranch: this.branchData[dirpath].branch };
-			this.parent.subBranchCb(this.branchData[path], nextbranch => this.onSubBranchCb(path, file, nextbranch), () => this.clearCacheQueueOnTreeFinished());
-		};
-	},
-	onSubBranchCb(path, file, nextbranch) {
-		const branch = this.branchData[path].dirbranch[file] = nextbranch || {};
-		this.branchData[path].branch = branch;
-		this.subBranch(path);
-	},
-	clearCacheQueueOnTreeFinished() {
-		if (--this.counter === 0) {
-			this.branchData = null;
-			this.callback(null, this.tree);
-			for (const callback of this.cacheQueue)
-				callback(null, this.tree);
-			this.cacheQueue = [];
-		}
-	},
-	fromCache(callback) {
-		if (this.counter === undefined)
-			callback(new Error("nothing in cache..."), null);
-		if (this.counter === 0)
-			callback(null, this.tree);
-		else
-			this.cacheQueue.push(callback);
-	}
-};
-class CompoundCallbackSubTree {
-	#private;
+class CompoundCallbackSubTreeNoProto {
+	#callstack;
+	#counter;
+	#tree;
+	#onError(error) {
+		for (const callback of this.#callstack)
+			callback(error, null);
+		this.#callstack = [];
+	};
 	constructor(options = {}) {
-		this.#private = new InternalTree(this);
-		if (options.dirStatsCb)
+		this.#callstack = [];
+		if (typeof options.dirStatsCb === "function")
 			this.dirStatsCb = options.dirStatsCb;
-		if (options.fileStatsCb)
+		if (typeof options.fileStatsCb === "function")
 			this.fileStatsCb = options.fileStatsCb;
-		if (options.subBranchCb)
+		if (typeof options.subBranchCb === "function")
 			this.subBranchCb = options.subBranchCb;
 	};
 	/**Get a Tree from all the (sub) files and folders from a basePath
 	 * @param {String} basePath 
 	 * @param {Function} callback
 	 */
-	fromPath(basePath, callback = console.log) {
-		this.#private.fromPath(basePath, callback);
+	fromPath(path, callback = console.log) {
+		this.#counter = 1;
+		const tree = this.#tree = {};
+		this.#callstack.push(callback);
+		const branchData = { path, branch: tree };
+		const clearCallstackOnTreeFinished = () => {
+			if (--this.#counter === 0) {
+				for (const callback of this.#callstack)
+					callback(null, tree);
+				this.#callstack = [];
+			}
+		};
+		const subBranch = (path, branchData) => {
+			fs.stat(path, (error, stats) => {
+				if (error !== null)
+					this.#onError(error);
+				branchData.stats = stats;
+				if (stats.isDirectory())
+					this.dirStatsCb(branchData, () => {
+						fs.readdir(path, (error, files) => {
+							if (error !== null)
+								this.#onError(error);
+							this.#counter += files.length;
+							for (const file of files) {
+								const nextpath = _path.join(path, file);
+								const nextBranchData = { path: nextpath, dirpath: path, file, dirbranch: branchData.branch };
+								this.subBranchCb(nextBranchData, nextbranch => {
+									const branch = nextBranchData.dirbranch[file] = nextbranch || {};
+									nextBranchData.branch = branch;
+									subBranch(nextpath, nextBranchData);
+								}, clearCallstackOnTreeFinished);
+							};
+							clearCallstackOnTreeFinished();
+						});
+					});
+				else if (stats.isFile())
+					this.fileStatsCb(branchData, clearCallstackOnTreeFinished);
+			});
+		};
+		subBranch(path, branchData);
 	};
 	/**Get the Tree that was returned from the previous call to fromPath.
 	 * @param {Function} callback 
 	 */
 	fromCache(callback = console.log) {
-		this.#private.fromCache(callback);
+		if (this.#counter === undefined)
+			callback(new Error("nothing in cache..."), null);
+		if (this.#counter === 0)
+			callback(null, this.#tree);
+		else
+			this.#callstack.push(callback);
 	};
 	/**
 	 * @param {Object} data
@@ -112,12 +102,11 @@ class CompoundCallbackSubTree {
 	 * @param {String} data.dirpath
 	 * @param {String} data.file
 	 * @param {Object} data.dirbranch
-	 * @param {Object} cbs 
-	 * @param {Function} cbs.nextBranch
-	 * @param {Function} cbs.blockBranch
+	 * @param {Function} nextBranch
+	 * @param {Function} blockBranch
 	 */
-	subBranchCb(data, cbs = { nextBranch: callbackFailure }) {
-		cbs.nextBranch();
+	subBranchCb(data, nextBranch = callbackFailure, blockBranch) {
+		nextBranch();
 	};
-}
-module.exports = CompoundCallbackSubTree;
+};
+module.exports = CompoundCallbackSubTreeNoProto;

@@ -5,56 +5,6 @@ A subtree method that offers great flexibility and features to the developer.
 const CompoundCallbackSubTree = require("compound-callback-subtree");
 ```
 <h2>Class: <code>CompoundCallbackSubTree</code></h2>
-<h3><code>CompoundCallbackSubTree.fromPath(basePath[,callback])</code></h3>
-<ul>
-    <details>
-		<summary>
-			<code>basePath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
-		</summary>
-		The <code>basepath</code> option allows the developer to specify in which base directory a subtree must be generated from.
-	</details>
-	<details>
-		<summary>
-			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
-		</summary>
-    	<ul>
-			<details>
-				<summary>
-					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
-				</summary>
-				Is an error in case the methods <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_stat_path_options_callback">fs.stats()</a> or <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> had failed.
-			</details>
-			<details>
-				<summary>
-					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
-				</summary>
-				Check out the the example below to see a tree.
-			</details>
-    	</ul>
-	</details>
-</ul>
-<h3><code>CompoundCallbackSubTree.fromCache([callback])</code></h3>
-<ul>
-	<details>
-		<summary>
-			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
-		</summary>
-    	<ul>
-			<details>
-				<summary>
-					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
-				</summary>
-				Is an error in case no tree is in the cache.
-			</details>
-			<details>
-				<summary>
-					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
-				</summary>
-				Check out the the example below to see a tree.
-			</details>
-    	</ul>
-	</details>
-</ul>
 <h3><code>new CompoundCallbackSubTree([options])</code></h3>
 <ul>
 	<details>
@@ -182,22 +132,72 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 								<summary>
 									<code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a>
 								</summary>
-								In case an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> representing the <code>nextBranch</code> is passed over as an argument to the <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> this object will become the next branch. In case of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">&lt;undefined&gt;</a> was passed over an empty Object become the next branch. The developer can choose to add additional information to the <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>.
+								If a <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a> is passed over as an argument to the <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> the passed over object becomes the branch for the corresponding <code>file</code>. However, if <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Undefined_type">undefined</a> was passed over an empty Object becomes the branch for the corresponding <code>file</code>. Developer's can choose to add additional information to the <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>.
 							</details>
 						</ul>
-						The <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is the feature that makes <code>subBranchCb</code> asynchronous compatible. Invoking either <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> or <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is required. The <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> will activate the proceeding of another recursive sub-tree process.
+						The <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is the feature that makes <code>subBranchCb</code> asynchronous compatible. Invoking either <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> or <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is required. The <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> activates the proceeding of another recursive sub-tree process.
 					</details>
 					<details>
 						<summary>
 							<code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a></code> <b>Required!</b>
 						</summary>
-						The <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is the feature that makes <code>subBranchCb</code> asynchronous compatible. Invoking either <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> or <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is required. The <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> will block any further recursive sub-tree. The developer can invoke the <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> and choose to ignore particular subfiles and subdirectories depending on factors found in the <code>data</code> parameter.
+						The <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is the feature that makes <code>subBranchCb</code> asynchronous compatible. Invoking either <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> or <code>nextBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> is required. The <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> blocks the particular <code>file</code> from being added to the branch. Developer can invoke the <code>blockBranch</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> to ignore a particular file or an entire folder and it's subfiles.
 					</details>
 				</ul>
 				After <code>dirStatsCb</code> has succeeded, under the hood <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> will be invoked to find all files contained within the directory and every file will be passed through <code>subBranchCb</code>.
 			</details>
 		</ul>
 		A substance formed from two or more elements chemically united in fixed proportions.
+	</details>
+</ul>
+<h3><code>compoundCallbackSubTree.fromPath(basePath[,callback])</code></h3>
+<ul>
+    <details>
+		<summary>
+			<code>basePath</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type">&lt;string&gt;</a>
+		</summary>
+		The <code>basepath</code> option allows the developer to specify in which base directory a subtree must be generated from.
+	</details>
+	<details>
+		<summary>
+			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
+		</summary>
+    	<ul>
+			<details>
+				<summary>
+					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
+				</summary>
+				Is an error in case the methods <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_stat_path_options_callback">fs.stats()</a> or <a href="https://nodejs.org/dist/latest-v12.x/docs/api/fs.html#fs_fs_readdir_path_options_callback">fs.readdir()</a> had failed.
+			</details>
+			<details>
+				<summary>
+					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
+				</summary>
+				Check out the the example below to see a tree.
+			</details>
+    	</ul>
+	</details>
+</ul>
+<h3><code>compoundCallbackSubTree.fromCache([callback])</code></h3>
+<ul>
+	<details>
+		<summary>
+			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
+		</summary>
+    	<ul>
+			<details>
+				<summary>
+					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
+				</summary>
+				Is an error in case no tree is in the cache.
+			</details>
+			<details>
+				<summary>
+					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
+				</summary>
+				Check out the the example below to see a tree.
+			</details>
+    	</ul>
 	</details>
 </ul>
 <h2>Example</h2>
