@@ -1,21 +1,21 @@
 {
-	"name": "compound-callback-subtree",
-	"version": "3.0.2",
-	"description": "A subtree method that offers great flexibility and features to the developer",
-	"main": "index.js",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/BerendKemper/compound-callback-subtree.git"
-	},
-	"keywords": [],
-	"author": {
-		"name": "Berend Kemper",
-		"email": "berend_kemper@hotmail.com",
-		"npmjs": "https://www.npmjs.com/~burndkemper"
-	},
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/BerendKemper/compound-callback-subtree/issues"
-	},
-	"homepage": "https://github.com/BerendKemper/compound-callback-subtree#readme"
+    "name": "compound-callback-subtree",
+    "version": "3.0.3",
+    "description": "A subtree method that offers great flexibility and features to the developer",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BerendKemper/compound-callback-subtree.git"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Berend Kemper",
+        "email": "berend_kemper@hotmail.com",
+        "npmjs": "https://www.npmjs.com/~burndkemper"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/BerendKemper/compound-callback-subtree/issues"
+    },
+    "homepage": "https://github.com/BerendKemper/compound-callback-subtree#readme"
 }
