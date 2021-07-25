@@ -34,7 +34,7 @@ class CompoundCallbackSubtree {
         const clearCallstackOnTreeFinished = () => {
             if (--this.#counter === 0) {
                 for (const callback of this.#queue)
-                    callback(null, branch);
+                    process.nextTick(callback, null, branch);
                 this.#queue = [];
             }
         };
@@ -85,7 +85,7 @@ class CompoundCallbackSubtree {
     fileStatsCb(branchData, callback = callbackFailure) {
         callback();
     };
-    /**@param {{path:string dirpath:string file:string dirbranch:object}} @param {nextBranch} nextBranch @param {function} blockBranch*/
+    /**@param {{path:string dirpath:string file:string dirbranch:object}}branchData @param {nextBranch} nextBranch @param {function} blockBranch*/
     subBranchCb(branchData, nextBranch = callbackFailure, blockBranch) {
         nextBranch();
     };
