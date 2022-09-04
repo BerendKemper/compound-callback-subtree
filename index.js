@@ -85,7 +85,7 @@ module.exports = class CompoundCallbackSubtree {
         callback(null, this.#tree);
     }
     /**@param {{path:string branch:object stats:Stats}} branchData @param {callback} callback*/
-    fileStatCb(branchData, callback = callbackFailure) {
+    dirStatCb(branchData, callback = callbackFailure) {
         callback();
     }
     /**@param {{path:string branch:object stats:Stats}} branchData @param {callback} callback*/
