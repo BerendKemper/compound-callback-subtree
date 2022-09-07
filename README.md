@@ -185,30 +185,6 @@ const CompoundCallbackSubTree = require("compound-callback-subtree");
 	</details>
 </ul>
 Recursively generated a tree from a path. In order to increase efficiëncy, when invoking this method multiple times with the same path while the first process of that same path hasn't finished yet, the callback is appended to a callbacks array of the first process. When fromPath is invoked for different paths at the same time, the latter calls are queued untill the first process has finished, unless offcourse a separate instance of CompoundCallbackSubtree is processing the latter.
-<h3><code>compoundCallbackSubTree.lastTree([callback])</code></h3>
-<ul>
-	<details>
-		<summary>
-			<code>callback</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">&lt;Function&gt;</a> Default: <code>(err, tree) => console.log(tree)</code>
-		</summary>
-    	<ul>
-			<details>
-				<summary>
-					<code>err</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Null_type">&lt;Null&gt;</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">&lt;Error&gt;</a>
-				</summary>
-				An error is returned in there was no last tree.
-			</details>
-			<details>
-				<summary>
-					<code>tree</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">&lt;Object&gt;</a>
-				</summary>
-				This is the end result tree. Check out the the example below to see a tree.
-			</details>
-    	</ul>
-        Compound callback subtree is asynchrononous.
-	</details>
-</ul>
-In case there was a tree it is returned. In case there was no tree, but there was a tree in process it returns that tree as soon as the process has finished. In case there was no process running and no tree returns an error.
 <h2>Example</h2>
 
 ```javascript
@@ -222,81 +198,54 @@ node_modules (root)
 |     |__ index.js
 |     |__ package.json
 |     |__ README.md
-|     |__ v2.0.0
-|     |     |__ etc...
-|     |__ etc...
 |__etc...
 */
 const CompoundCallbackSubTree = require("compound-callback-subtree");
-const LocaleTimezoneDate = require("locale-timezone-date");
-const { filesJSON, FileJSON } = require("files-json");
-const path = require("path");
-const toE3sBytesNotation = function load() {
-	const e3sBytes = { 0: "B", 1: "KB", 2: "MG", 3: "GB", 4: "TB", 5: "PB" };
-	return byteLength => {
-		let e3s = 0;
-		while (byteLength >= 1024 && e3sBytes[e3s++])
-			byteLength /= 1024;
-		return `${Math.round(byteLength * 100) / 100} ${e3sBytes[e3s]}`;
-	};
-}();
-class MyVeryOwnTree extends CompoundCallbackSubTree {
-	dirStatsCb(data, callback) {
-		data.branch["create-time"] = new LocaleTimezoneDate(data.stats.birthtimeMs).toLocaleISOString();
-		data.branch.dirpath = path.join(__dirname, data.path);
-		data.branch.ignored = [];
-		callback();
-	};
-	fileStatsCb(data, callback) {
-		data.branch["create-time"] = new LocaleTimezoneDate(data.stats.birthtimeMs).toLocaleISOString();
-		data.branch["byte-size"] = toE3sBytesNotation(data.stats.size);
-		data.branch.filepath = path.join(__dirname, data.path);
-		callback();
-	};
-	subBranchCb(data, nextBranch, blockBranch) {
-		if (data.file === "MONKEY.json") {
-			new FileJSON(data.path, fileJSON => { // this is asynchronous
-				for (const prop in fileJSON)
-					data.dirbranch[prop] = fileData[prop];
-				fileJSON.close();
-				blockBranch(); // this is asynchronous compatible
-			});
-		}
-		else if (data.file.startsWith(".")) { // ".git", ".gitignore", ".v2.0.0", etc.
-			data.dirbranch.ignored.push(data.file);
-			blockBranch();
-		}
-		else {
-			nextBranch();
-		}
-	};
-};
-const myTree = new MyVeryOwnTree();
-myTree.fromPath("compound-callback-subtree", (error, tree) => {
-	console.log(error, tree);
+const statCallback = (branchData, callback) => callback(branchData.branch.path = branchData.path);
+const subtree = new CompoundCallbackSubTree({
+    dirStatCb: statCallback,
+    fileStatCb: statCallback,
+    subBranchCb: (branchData, proceed, block) => branchData.file.includes(".git") ? block() : proceed()
 });
-/*
-returns
-null {
-	'create-time': '2020-08-16T23:29:00.675+0200',
-	dirpath: 'D:\\js\\node_modules\\compound-callback-subtree',
-	ignored: [ '.git', '.gitignore', '.v2.0.0', '.v3', '.v4' ],
-	'index.js': {
-		'create-time': '2021-02-24T19:49:19.252+0100',
-		'byte-size': '4.46 KB',
-		filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\index.js'
-	},
-	'package.json': {
-		'create-time': '2021-02-24T19:49:19.307+0100',
-		'byte-size': '633 B',
-		filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\package.json'
-	},
-	'README.md': {
-		'create-time': '2021-02-24T19:49:19.339+0100',
-		'byte-size': '16.27 KB',
-		filepath: 'D:\\js\\node_modules\\compound-callback-subtree\\README.md'
-	},
-	'monkey says': 'hoehoehaha'
+
+// posix no absolute path
+subtree.fromPath("./");
+{
+    path: './',
+    'index.d.ts': { path: 'index.d.ts' },
+    'index.js': { path: 'index.js' },
+    'MONKEY.json': { path: 'MONKEY.json' },
+    'package.json': { path: 'package.json' },
+    'README.md': { path: 'README.md' }
 }
-*/
+
+// win32 with absolute path (only if process.platform === "win32")
+subtree.fromPath(path.resolve("./"));
+{
+  path: 'D:\\js\\node_modules\\compound-callback-subtree',
+  'index.d.ts': {
+    path: 'D:\\js\\node_modules\\compound-callback-subtree\\index.d.ts'
+  },
+  'index.js': { path: 'D:\\js\\node_modules\\compound-callback-subtree\\index.js' },
+  'MONKEY.json': {
+    path: 'D:\\js\\node_modules\\compound-callback-subtree\\MONKEY.json'
+  },
+  'package.json': {
+    path: 'D:\\js\\node_modules\\compound-callback-subtree\\package.json'
+  },
+  'README.md': {
+    path: 'D:\\js\\node_modules\\compound-callback-subtree\\README.md'
+  }
+}
+
+// posix with absolute path
+subtree.fromPath(path.posix.resolve("./"));
+{
+  path: '/js/node_modules/compound-callback-subtree',
+  'index.js': { path: '/js/node_modules/compound-callback-subtree/index.js' },
+  'MONKEY.json': { path: '/js/node_modules/compound-callback-subtree/MONKEY.json' },
+  'package.json': { path: '/js/node_modules/compound-callback-subtree/package.json' },
+  'README.md': { path: '/js/node_modules/compound-callback-subtree/README.md' }
+}
+subtree.fromPath("./");
 ```
