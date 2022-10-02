@@ -1,10 +1,13 @@
 import * as fs from "fs";
-export = class CompoundCallbackSubtree {
+declare class CompoundCallbackSubtree {
     constructor(options: ConstructorOptions)
     /**
      * Generates a tree from the given `path`.
      * CompoundCallbackSubtree is asynchronous, for each instance only one process of generating a tree can be ran at a single time.
      * When invoking fromPath multiple times, these calls are queued to be running sequentially one after another.
+     * A tree is bare bone structure of empty objects called branches. It is up to the developer to insert relevant file/directory information into the branches of the tree.
+     *
+     * In the examples below the path of files and directories are inserted as information to branches.
      * ```javascript
         // posix no absolute path
         subtree.fromPath("./");
@@ -57,7 +60,7 @@ interface ConstructorOptions {
     subBranchCb?: subBranchCallback;
 }
 type returnTree = (tree: Branch) => void
-type statCallback = (branchData: BranchDataStats, callback: () => void) => void
+type statCallback = (this: CompoundCallbackSubtree, branchData: BranchDataStats, callback: () => void) => void
 interface BranchDataStats {
     /** The branch object of the current file/directory is `branch`. */
     branch: object;
@@ -72,7 +75,7 @@ interface BranchDataStats {
     /** The <fs.Stats> object of the current file/directory is `stats`. */
     stats: fs.Stats;
 }
-type subBranchCallback = (branchData: BranchDataBase, proceed: proceed, block?: () => void) => void
+type subBranchCallback = (this: CompoundCallbackSubtree, branchData: BranchDataBase, proceed: proceed, block?: () => void) => void
 interface BranchDataBase {
     /** The parent directory's branch object of the current file/directory is `dirbranch`. */
     dirbranch: object;
@@ -88,3 +91,4 @@ type proceed = (nextBranch?: Branch) => void
 interface Branch {
     [file: string]: Branch
 }
+export = CompoundCallbackSubtree;

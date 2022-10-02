@@ -70,11 +70,11 @@ module.exports = class CompoundCallbackSubtree {
         this.#counter += files.length;
         for (const file of files) {
             const nextBranchData = { path: this.#path.join(branchData.path, file), dirpath: branchData.path, file, dirbranch: branchData.branch };
-            this.subBranchCb(nextBranchData, this.#makeSubBranchCallback(nspath, file, nextBranchData), this.#makeReturnTreeCallback());
+            this.subBranchCb(nextBranchData, this.#makeSubBranchCallback(nspath, nextBranchData, file), this.#makeReturnTreeCallback());
         };
         this.#returnTree();
     }
-    #makeSubBranchCallback(nspath, file, branchData) {
+    #makeSubBranchCallback(nspath, branchData, file) {
         return nextbranch => this.#proceed(nspath + sep + file, branchData, file, nextbranch);
     }
     #proceed(nspath, branchData, file, nextbranch) {
